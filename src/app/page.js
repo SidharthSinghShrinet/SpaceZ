@@ -1,65 +1,138 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tag, Gift, CreditCard, Copy } from "lucide-react";
+import { toast } from "react-toastify";
+
+export default function OffersPage() {
+  const sitewideCoupons = [
+    { code: "LONGSTAY", value: "₹1,500", desc: "15% off when you book for 5 days or more and 20% off when you book for 30 days or more." },
+    { code: "EARLYBIRD", value: "₹3,000", desc: "15% off when you book for 5 days or more and 20% off when you book for 30 days or more." },
+    { code: "RUSHDEAL", value: "Flat 10%", desc: "15% off when you book for 5 days or more and 20% off when you book for 30 days or more." },
+  ];
+
+  const giftCards = [
+    { brand: "SPACEZ", value: "₹1,500", condition: "Get this gift voucher on booking above ₹1,500" },
+    { brand: "MYNTRA", value: "₹1,500", condition: "Get this gift voucher on booking above ₹2,000" },
+    { brand: "HAMMER", value: "₹1,000", condition: "Get this gift voucher on booking above ₹1,500" },
+  ];
+
+  const paymentOffers = [
+    { bank: "HDFC BANK", offer: "10% OFF", condition: "Get 10% off on booking above ₹1,500" },
+  ];
+
+  const handleCopy = (code) => {
+    navigator.clipboard.writeText(code);
+    toast.success("Coupon Copied");
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header */}
+      <header className="flex justify-between items-center p-4 border-b">
+        <h1 className="text-2xl font-bold text-orange-700">SPACEZ</h1>
+        <button className="text-gray-600">☰</button>
+      </header>
+
+      {/* Tabs */}
+      <Tabs defaultValue="coupons" className="w-full px-3">
+        <TabsList className="grid grid-cols-3 w-full mt-4 bg-orange-50">
+          <TabsTrigger value="coupons">Coupons</TabsTrigger>
+          <TabsTrigger value="giftcards">Giftcards</TabsTrigger>
+          <TabsTrigger value="payments">Payment Offers</TabsTrigger>
+        </TabsList>
+
+        {/* Coupons */}
+        <TabsContent value="coupons" className="space-y-4 mt-4">
+          <p className="text-center text-sm text-gray-600">
+            Sign in to unlock exclusive additional rewards
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          <div className="flex justify-center">
+            <Button className="bg-orange-700 hover:bg-orange-800">Sign In</Button>
+          </div>
+
+          <h2 className="font-semibold text-lg mt-6 flex items-center gap-2 text-orange-800">
+            <Tag size={18} /> Sitewide Coupons
+          </h2>
+          {sitewideCoupons.map((item, i) => (
+            <Card key={i} className="border-l-4 border-orange-600">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-bold text-lg">{item.code}</h3>
+                    <p className="text-sm text-gray-600">{item.desc}</p>
+                    <p className="font-semibold mt-2">{item.value}</p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="mt-2 text-orange-700 border-orange-700 hover:bg-orange-700 hover:text-white"
+                      onClick={()=>handleCopy(item.code)}
+                    >
+                      Copy <Copy className="ml-1 w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        {/* Giftcards */}
+        <TabsContent value="giftcards" className="space-y-4 mt-4">
+          <h2 className="font-semibold text-lg flex items-center gap-2 text-orange-800">
+            <Gift size={18} /> Bonus Gift Cards
+          </h2>
+          {giftCards.map((card, i) => (
+            <Card key={i} className="border-l-4 border-pink-600">
+              <CardContent className="p-4 flex justify-between items-center">
+                <div>
+                  <h3 className="font-bold text-lg">{card.brand}</h3>
+                  <p className="text-sm text-gray-600">{card.condition}</p>
+                  <p className="font-semibold mt-2">{card.value}</p>
+                </div>
+                <Button onClick={()=>handleCopy(card.brand)} className="bg-orange-700 hover:bg-orange-800">Collect</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        {/* Payment Offers */}
+        <TabsContent value="payments" className="space-y-4 mt-4">
+          <h2 className="font-semibold text-lg flex items-center gap-2 text-orange-800">
+            <CreditCard size={18} /> Payment Offers
+          </h2>
+          {paymentOffers.map((offer, i) => (
+            <Card key={i} className="border-l-4 border-blue-600">
+              <CardContent className="p-4 flex justify-between items-center">
+                <div>
+                  <h3 className="font-bold text-lg">{offer.bank}</h3>
+                  <p className="text-sm text-gray-600">{offer.condition}</p>
+                  <p className="font-semibold text-blue-600 mt-1">{offer.offer}</p>
+                </div>
+                <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white">
+                  Read More
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+      </Tabs>
+
+      {/* Bottom Navbar */}
+      <nav className="m-5 rounded-full border-t bg-white py-2 border-red-500 border-2 flex justify-evenly text-sm text-gray-600">
+        {["Explore", "Offers", "Bookings", "Wishlist", "Profile"].map((nav, i) => (
+          <button key={i} className={`flex lg:text-2xl flex-col items-center ${nav === "Offers" ? "text-orange-700 font-bold" : ""}`}>
+            <span>{nav}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
